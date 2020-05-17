@@ -1,0 +1,15 @@
+image: ubuntu:20.04
+
+stages:
+  - build
+
+before_script:
+  - apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get -y install build-essential autoconf libtool libusb-1.0-0-dev libudev-dev git pkg-config
+
+build_progyon:
+  stage: build
+  artifacts:
+    paths:
+      - pic32prog
+  script:
+      - make
