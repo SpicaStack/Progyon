@@ -28,7 +28,12 @@
 #include "pic32.h"
 
 #ifndef VERSION
-#define VERSION         "2.0."GITCOUNT
+    #define BASEVERSION     "2.0.0"
+    #ifdef GITREV
+        #define VERSION     BASEVERSION"-git-"GITREV
+    #else
+        #define VERSION     BASEVERSION
+    #endif
 #endif
 #define MINBLOCKSZ          128
 #define FLASHV_KSEG0_BASE   0x9d000000

@@ -1,6 +1,7 @@
 CC		= gcc
-GITCOUNT        = $(shell git rev-list HEAD --count)
-CFLAGS          = -Wall -g -O -Ihidapi/hidapi -DGITCOUNT='"$(GITCOUNT)"'
+GITREV        = $(shell git show --pretty=format:"%h" --no-patch)
+GITDIRTY        = $(shell git diff --quiet || echo '-dirty')
+CFLAGS          = -Wall -g -O -Ihidapi/hidapi -DGITREV='"$(GITREV)$(GITDIRTY)"'
 LDFLAGS         = -s
 
 # Windows

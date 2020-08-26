@@ -1,8 +1,9 @@
 CC              = gcc
 
-GITCOUNT        = $(shell git rev-list HEAD --count)
+GITREV        = $(shell git show --pretty=format:"%h" --no-patch)
+GITDIRTY        = $(shell git diff --quiet || echo '-dirty')
 UNAME           = $(shell uname)
-CFLAGS          = -Wall -Wextra -Werror=missing-field-initializers -g -O -Ihidapi/hidapi -DGITCOUNT='"$(GITCOUNT)"'
+CFLAGS          = -Wall -g -O -Ihidapi/hidapi -DGITREV='"$(GITREV)$(GITDIRTY)"'
 LDFLAGS         = -g
 CCARCH          =
 LIBUSB_LIBS     = $(shell pkg-config libusb-1.0 --libs)
