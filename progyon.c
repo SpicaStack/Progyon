@@ -28,7 +28,20 @@
 #include "pic32.h"
 
 #ifndef VERSION
-    #define BASEVERSION     "2.0.0"
+    /* We use semver.
+
+    This is not a library, so it doesn't have an explicit API.
+    Let's assume the API consumers are the command line users,
+    and so the contract we try to uphold
+    is how the command line tool is used.
+
+    Then:
+
+    - changes breaking things people rely on to them bump the first number,
+    - changes adding new functionality bump the second number,
+    - changes not affecting things users rely on bump the third number.
+    */
+    #define BASEVERSION     "3.0.0"
     #ifdef GITREV
         #define VERSION     BASEVERSION"-git-"GITREV
     #else
