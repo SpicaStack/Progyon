@@ -6,7 +6,7 @@ LDFLAGS         = -s
 # Windows
 LIBS            += -Lhidapi/windows/.libs -lhidapi -lsetupapi
 
-PROG_OBJS       = pic32prog.o target.o executive.o serial.o \
+PROG_OBJS       = progyon.o target.o executive.o serial.o \
                   adapter-pickit2.o adapter-hidboot.o adapter-an1388.o\
                   adapter-bitbang.o adapter-stk500v2.o adapter-uhb.o \
                   adapter-an1388-uart.o configure.o \
@@ -26,9 +26,9 @@ ifeq (/usr/bin/i686-w64-mingw32-gcc,$(wildcard /usr/bin/i686-w64-mingw32-gcc))
     CC          = i686-w64-mingw32-gcc
 endif
 
-all:            pic32prog.exe
+all:            progyon.exe
 
-pic32prog.exe:  $(PROG_OBJS)
+progyon.exe:  $(PROG_OBJS)
 		$(CC) $(LDFLAGS) -o $@ $(PROG_OBJS) $(LIBS)
 
 hidapi/windows/.libs/libhidapi.a:
@@ -50,6 +50,6 @@ family-mx3.o: family-mx3.c pic32.h
 family-mz.o: family-mz.c pic32.h
 family-mm.o: family-mm.c pic32.h
 family-mk.o: family-mk.c pic32.h
-pic32prog.o: pic32prog.c target.h adapter.h serial.h localize.h
+progyon.o: progyon.c target.h adapter.h serial.h localize.h
 serial.o: serial.c adapter.h
 target.o: target.c target.h adapter.h localize.h pic32.h

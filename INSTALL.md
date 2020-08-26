@@ -1,4 +1,4 @@
-# Installing pic32prog
+# Installing Progyon
 
 ## Checkout
 
@@ -20,4 +20,8 @@ Run the following command:
 make
 ```
 
-Afterwards, the file `pic32prog` will appear in the build directory.
+Afterwards, the file `progyon` will appear in the build directory.
+
+## Up to date info
+
+When in doubt whether this file has been updated, make sure to check the `.gitlab-ci.yml` file. Problems in that one will alert the maintainers.
