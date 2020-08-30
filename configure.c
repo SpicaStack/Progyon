@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2015 Serge Vakulenko
  *
- * This file is part of PIC32PROG project, which is distributed
+ * This file is part of PROGYON project, which is distributed
  * under the terms of the GNU General Public License (GPL).
  * See the accompanying file "COPYING" for more details.
  */
@@ -326,14 +326,14 @@ void target_configure()
 
     /*
      * Find the configuration file, if any.
-     * (1) First, try a path from PIC32PROG_CONF_FILE environment variable.
+     * (1) First, try a path from PROGYON_CONF_FILE environment variable.
      * (2) Otherwise, look for a file in the local directory.
      * (3) Otherwise, use /usr/local/etc/ directory (on Unix)
-     *     or a directory where pic32prog.exe resides (on Windows)
+     *     or a directory where progyon.exe resides (on Windows)
      */
-    confname = getenv("PIC32PROG_CONF_FILE");
+    confname = getenv("PROGYON_CONF_FILE");
     if (! confname)
-        confname = "pic32prog.conf";
+        confname = "progyon.conf";
 
     if (access(confname, 0) < 0) {
 #if defined(__CYGWIN32__) || defined(MINGW32)
@@ -345,12 +345,12 @@ void target_configure()
                 exit(-1);
             }
             strncpy(buf, progname, p - progname);
-            strcpy(buf + (p - progname), "\\pic32prog.conf");
+            strcpy(buf + (p - progname), "\\progyon.conf");
             confname = buf;
         } else
-            confname = "c:\\pic32prog.conf";
+            confname = "c:\\progyon.conf";
 #else
-        confname = "/usr/local/etc/pic32prog.conf";
+        confname = "/usr/local/etc/progyon.conf";
 #endif
     }
 

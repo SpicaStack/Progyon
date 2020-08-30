@@ -1,8 +1,9 @@
 CC              = gcc
 
-GITCOUNT        = $(shell git rev-list HEAD --count)
+GITREV        = $(shell git show --pretty=format:"%h" --no-patch)
+GITDIRTY        = $(shell git diff --quiet || echo '-dirty')
 UNAME           = $(shell uname)
-CFLAGS          = -Wall -Wextra -Werror=missing-field-initializers -g -O -Ihidapi/hidapi -DGITCOUNT='"$(GITCOUNT)"'
+CFLAGS          = -Wall -g -O -Ihidapi/hidapi -DGITREV='"$(GITREV)$(GITDIRTY)"'
 LDFLAGS         = -g
 CCARCH          =
 LIBUSB_LIBS     = $(shell pkg-config libusb-1.0 --libs)
@@ -44,7 +45,7 @@ ifeq ($(UNAME),Darwin)
     CC          += $(CCARCH)
 endif
 
-PROG_OBJS       = pic32prog.o target.o executive.o serial.o \
+PROG_OBJS       = progyon.o target.o executive.o serial.o \
                   adapter-pickit2.o adapter-hidboot.o adapter-an1388.o \
                   adapter-bitbang.o adapter-stk500v2.o adapter-uhb.o \
                   adapter-an1388-uart.o configure.o \
@@ -59,34 +60,34 @@ ifeq ($(UNAME),Darwin)
     LIBS        += /opt/local/lib/libusb-1.0.a -lobjc
 endif
 
-all:            pic32prog
+all:            progyon
 
-pic32prog:      $(PROG_OBJS)
+progyon:      $(PROG_OBJS)
 		$(CC) $(LDFLAGS) -o $@ $(PROG_OBJS) $(LIBS)
 
 load:           demo1986ve91.srec
-		pic32prog $<
+		progyon $<
 
 adapter-mpsse:	adapter-mpsse.c
 		$(CC) $(LDFLAGS) $(CFLAGS) -DSTANDALONE -o $@ adapter-mpsse.c $(LIBS)
 
-pic32prog.po:	*.c
-		xgettext --from-code=utf-8 --keyword=_ pic32prog.c target.c adapter-lpt.c -o $@
+progyon.po:	*.c
+		xgettext --from-code=utf-8 --keyword=_ progyon.c target.c adapter-lpt.c -o $@
 
-pic32prog-ru.mo: pic32prog-ru.po
+progyon-ru.mo: progyon-ru.po
 		msgfmt -c -o $@ $<
 
-pic32prog-ru-cp866.mo ru/LC_MESSAGES/pic32prog.mo: pic32prog-ru.po
+progyon-ru-cp866.mo ru/LC_MESSAGES/progyon.mo: progyon-ru.po
 		iconv -f utf-8 -t cp866 $< | sed 's/UTF-8/CP866/' | msgfmt -c -o $@ -
-		cp pic32prog-ru-cp866.mo ru/LC_MESSAGES/pic32prog.mo
+		cp progyon-ru-cp866.mo ru/LC_MESSAGES/progyon.mo
 
 clean:
-		rm -f *~ *.o core pic32prog adapter-mpsse pic32prog.po hidapi/ar-lib hidapi/compile
+		rm -f *~ *.o core progyon adapter-mpsse progyon.po hidapi/ar-lib hidapi/compile
 		if [ -f hidapi/Makefile ]; then make -C hidapi clean; fi
 
-install:	pic32prog #pic32prog-ru.mo
-		install -c -s pic32prog /usr/local/bin/pic32prog
-#		install -c -m 444 pic32prog-ru.mo /usr/local/share/locale/ru/LC_MESSAGES/pic32prog.mo
+install:	progyon #progyon-ru.mo
+		install -c -s progyon /usr/local/bin/progyon
+#		install -c -m 444 progyon-ru.mo /usr/local/share/locale/ru/LC_MESSAGES/progyon.mo
 
 hidapi/hidapi/hidapi.h:
 		git submodule update --init
@@ -114,6 +115,6 @@ family-mx3.o: family-mx3.c pic32.h
 family-mz.o: family-mz.c pic32.h
 family-mm.o: family-mm.c pic32.h
 family-mk.o: family-mk.c pic32.h
-pic32prog.o: pic32prog.c target.h adapter.h serial.h localize.h
+progyon.o: progyon.c target.h adapter.h serial.h localize.h
 serial.o: serial.c adapter.h
 target.o: target.c target.h adapter.h localize.h pic32.h

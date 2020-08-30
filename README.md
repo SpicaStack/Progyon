@@ -1,5 +1,9 @@
-Pic32prog is a utility for loading data into a flash memory of Microchip PIC32
+Progyon
+=======
+
+Progyon is a utility for loading data into a flash memory of Microchip PIC32
 microcontrollers.  Supported adapters and bootloaders:
+
  * Microchip PICkit2
  * Microchip PICkit3 with scripting firmware
  * Olimex ARM-USB-Tiny (not finished yet)
@@ -10,15 +14,18 @@ microcontrollers.  Supported adapters and bootloaders:
  * AN1388 HID bootloader
  * Legacy FS_USB HID bootloader
 
+The Progyon project is part of the [SpicaStack](https://gitlab.com/spicastack/) family of PIC32 tools.
 
-=== Usage ===
+Progyon is an updated fork of [pic32prog](https://github.com/sergev/pic32prog). Many thanks to original developers!.
 
-When called without parameters, pic32prog utility detects a type of microcontroller
-and device configuration.  For example:
+Usage
+-----
 
-    % pic32prog
+When called without parameters, `progyon` utility detects a type of microcontroller and device configuration.  For example:
+
+    % progyon
     Programmer for Microchip PIC32 microcontrollers, Version 1.0
-        Copyright: (C) 2011 Serge Vakulenko
+        Copyright: (C) 2011-2020 Progyon contributors
           Adapter: PICkit2 Version 2.32.0
         Processor: 795F512L (id 04307053)
      Flash memory: 512 kbytes
@@ -51,12 +58,12 @@ and device configuration.  For example:
 
 Writing to flash memory:
 
-    pic32prog [-v] file.srec
-    pic32prog [-v] file.hex
+    progyon [-v] file.srec
+    progyon [-v] file.hex
 
 Reading memory to file:
 
-    pic32prog -r file.bin address length
+    progyon -r file.bin address length
 
 Parameters:
 
@@ -68,24 +75,27 @@ Parameters:
     -r          - read mode
 
 Input file should have format SREC or Intel HEX.
+
 You can convert ELF format (also COFF or A.OUT) to SREC using objcopy utility,
 for example:
 
     objcopy -O srec firmware.elf firmware.srec
 
 
-=== Sources ===
+Distribution
+------------
 
-Sources are distributed under the terms of GPL.
-You can download sources using Git:
+Progyon is distributed under the terms of the GPLv2 license. See `COPYING.txt`.
 
-    git clone https://github.com/sergev/pic32prog.git
+You can download the sources using Git:
 
-To build it on Ubuntu, a few additional packages need
+    git clone https://gitlab.com/spicastack/progyon.git
+
+### Building
+
+To build Progyon on Ubuntu, a few additional packages need
 to be installed:
 
     sudo apt-get install libusb-dev libusb-1.0-0-dev libudev-dev
 
-___
-Regards,
-Serge Vakulenko
+For up to date building instructions, refer to the `.gitlab-ci.yml` file.

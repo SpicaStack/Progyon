@@ -10,6 +10,6 @@ build_progyon:
   stage: build
   artifacts:
     paths:
-      - pic32prog
+      - progyon
   script:
       - make

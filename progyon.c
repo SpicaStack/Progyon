@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2011-2014 Serge Vakulenko
  *
- * This file is part of PIC32PROG project, which is distributed
+ * This file is part of PROGYON project, which is distributed
  * under the terms of the GNU General Public License (GPL).
  * See the accompanying file "COPYING" for more details.
  */
@@ -28,7 +28,25 @@
 #include "pic32.h"
 
 #ifndef VERSION
-#define VERSION         "2.0."GITCOUNT
+    /* We use semver.
+
+    This is not a library, so it doesn't have an explicit API.
+    Let's assume the API consumers are the command line users,
+    and so the contract we try to uphold
+    is how the command line tool is used.
+
+    Then:
+
+    - changes breaking things people rely on to them bump the first number,
+    - changes adding new functionality bump the second number,
+    - changes not affecting things users rely on bump the third number.
+    */
+    #define BASEVERSION     "3.0.0"
+    #ifdef GITREV
+        #define VERSION     BASEVERSION"-git-"GITREV
+    #else
+        #define VERSION     BASEVERSION
+    #endif
 #endif
 #define MINBLOCKSZ          128
 #define FLASHV_KSEG0_BASE   0x9d000000
@@ -838,21 +856,21 @@ int main(int argc, char **argv)
     setlocale(LC_ALL, "");
 #if defined(__CYGWIN32__) || defined(MINGW32)
     /* Files with localized messages should be placed in
-     * the current directory or in c:/Program Files/pic32prog. */
-    if (access("./ru/LC_MESSAGES/pic32prog.mo", R_OK) == 0)
-        bindtextdomain("pic32prog", ".");
+     * the current directory or in c:/Program Files/progyon. */
+    if (access("./ru/LC_MESSAGES/progyon.mo", R_OK) == 0)
+        bindtextdomain("progyon", ".");
     else
-        bindtextdomain("pic32prog", "c:/Program Files/pic32prog");
+        bindtextdomain("progyon", "c:/Program Files/progyon");
 #else
-    bindtextdomain("pic32prog", "/usr/local/share/locale");
+    bindtextdomain("progyon", "/usr/local/share/locale");
 #endif
-    textdomain("pic32prog");
+    textdomain("progyon");
 
     setvbuf(stdout, (char *)NULL, _IOLBF, 0);
     setvbuf(stderr, (char *)NULL, _IOLBF, 0);
     printf(_("Programmer for Microchip PIC32 microcontrollers, Version %s\n"), VERSION);
     progname = argv[0];
-    copyright = _("    Copyright: (C) 2011-2015 Serge Vakulenko");
+    copyright = _("    Copyright: (C) 2011-2020 Progyon contributors");
     signal(SIGINT, interrupted);
 #ifdef __linux__
     signal(SIGHUP, interrupted);
@@ -939,17 +957,17 @@ int main(int argc, char **argv)
         }
 usage:
         printf("%s.\n\n", copyright);
-        printf("PIC32prog comes with ABSOLUTELY NO WARRANTY; for details\n");
+        printf("Progyon comes with ABSOLUTELY NO WARRANTY; for details\n");
         printf("use `--warranty' option. This is Open Source software. You are\n");
         printf("welcome to redistribute it under certain conditions. Use the\n");
         printf("'--copying' option for details.\n\n");
         printf("Probe:\n");
-        printf("       pic32prog\n");
+        printf("       progyon\n");
         printf("\nWrite flash memory:\n");
-        printf("       pic32prog [-v] file.srec\n");
-        printf("       pic32prog [-v] file.hex\n");
+        printf("       progyon [-v] file.srec\n");
+        printf("       progyon [-v] file.hex\n");
         printf("\nRead memory:\n");
-        printf("       pic32prog -r file.bin address length\n");
+        printf("       progyon -r file.bin address length\n");
         printf("\nArgs:\n");
         printf("       file.srec           Code file in SREC format\n");
         printf("       file.hex            Code file in Intel HEX format\n");

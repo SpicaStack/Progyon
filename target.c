@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2011-2013 Serge Vakulenko
  *
- * This file is part of PIC32PROG project, which is distributed
+ * This file is part of PROGYON project, which is distributed
  * under the terms of the GNU General Public License (GPL).
  * See the accompanying file "COPYING" for more details.
  */
@@ -65,7 +65,7 @@ family_t family_bl  = { "bootloader", FAMILY_BOOTLOADER,
 
 /*
  * Table of PIC32 chip variants.
- * This list can be extended at run time from pic32prog.conf file.
+ * This list can be extended at run time from progyon.conf file.
  */
 #define TABSZ   1000
 
@@ -523,7 +523,7 @@ target_t *target_open(const char *port_name, int baud_rate, int interface, int s
     }
     t->cpu_name = "Unknown";
 
-    /* Update pic2_tab[] array from the pic32prog.conf file. */
+    /* Update pic2_tab[] array from the progyon.conf file. */
     target_configure();
 
     /* Find adapter. */

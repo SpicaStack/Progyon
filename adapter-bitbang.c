@@ -6,7 +6,7 @@
  *
  * Additions for talking to ascii ICSP programmer Copyright (C) 2015 Robert Rozee
  *
- * This file is part of PIC32PROG project, which is distributed
+ * This file is part of PROGYON project, which is distributed
  * under the terms of the GNU General Public License (GPL).
  * See the accompanying file "COPYING" for more details.
  */
@@ -1009,7 +1009,7 @@ adapter_t *adapter_open_bitbang(const char *port, int baud_rate)
 //
 // the following block of code is used to upload firmware to
 // an attached Arduino NANO using the STK500v1 protocol:
-// PIC32PROG -d ASCII:COM5 -b3
+// progyon -d ASCII:COM5 -b3
 //
 // once the firmware upload is completed, exits from pic32prog
 //
