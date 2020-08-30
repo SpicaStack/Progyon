@@ -2,7 +2,7 @@ CC              = gcc
 
 GITCOUNT        = $(shell git rev-list HEAD --count)
 UNAME           = $(shell uname)
-CFLAGS          = -Wall -g -O -Ihidapi/hidapi -DGITCOUNT='"$(GITCOUNT)"'
+CFLAGS          = -Wall -Wextra -Werror=missing-field-initializers -g -O -Ihidapi/hidapi -DGITCOUNT='"$(GITCOUNT)"'
 LDFLAGS         = -g
 CCARCH          =
 LIBUSB_LIBS     = $(shell pkg-config libusb-1.0 --libs)
