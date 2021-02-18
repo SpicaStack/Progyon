@@ -1348,6 +1348,16 @@ static void mpsse_program_double_word(adapter_t *adapter, unsigned addr, unsigne
     mpsse_xferFastData(a, word0, 0, 1);  	/* Send 1st word. */    // Data, don't read, immediate, was not before
     mpsse_xferFastData(a, word1, 0, 1);  	/* Send 2nd word. */    // Data, don't read, immediate, was not before
  
+ 	/* Datasheet requires a switch to MTAP and a 400us delay
+ 	 * after every ROW_PROGRAM or DOUBLE_WORD_PGRM.
+  	 * It's specified only in case where JTAGEN is set,
+ 	 * but do every time.
+  	 */
+  	 
+    mpsse_sendCommand(a, TAP_SW_MTAP, 1);	// Immediately go to MTAP, as per specs
+    mdelay(2);								// Need at least 400us delay.
+    mpsse_sendCommand(a,TAP_SW_ETAP, 1);	// Put us back where we were!
+ 
     unsigned response = get_pe_response(a);
     if (response != (PE_DOUBLE_WORD_PGRM << 16)) {
         fprintf(stderr, "%s: failed to program double words 0x%08x 0x%08x at 0x%08x, reply = %08x\n",
