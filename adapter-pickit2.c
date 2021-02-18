@@ -838,8 +838,8 @@ static void pickit_program_double_word(adapter_t *adapter,
         exit(-1);
     }
     /* Use PE to write flash memory. */
-    pickit_send(a, 27, CMD_CLEAR_UPLOAD_BUFFER,
-        CMD_EXECUTE_SCRIPT, 23,
+    pickit_send(a, 33, CMD_CLEAR_UPLOAD_BUFFER,
+        CMD_EXECUTE_SCRIPT, 29,
             SCRIPT_JT2_SENDCMD, ETAP_FASTDATA,
             SCRIPT_JT2_XFRFASTDAT_LIT,
                 0, 0, PE_DOUBLE_WORD_PGRM, 0,
@@ -858,6 +858,9 @@ static void pickit_program_double_word(adapter_t *adapter,
                 (unsigned char) (word1 >> 8),
                 (unsigned char) (word1 >> 16),
                 (unsigned char) (word1 >> 24),
+            SCRIPT_JT2_SENDCMD, TAP_SW_MTAP,		// Immediately switch to MTAP
+            SCRIPT_DELAY_SHORT, 23,                // 1 msec delay
+            SCRIPT_JT2_SENDCMD, TAP_SW_ETAP,		// Restore preious state - ETAP
            SCRIPT_JT2_GET_PE_RESP,
         CMD_UPLOAD_DATA);
     pickit_recv(a);
